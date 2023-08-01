@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package auction.auction;
+
+import "auction/auction/asset.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/PavelTabacu/auction/x/auction/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc CreateAsset     (MsgCreateAsset    ) returns (MsgCreateAssetResponse    );
+  rpc UpdateAsset     (MsgUpdateAsset    ) returns (MsgUpdateAssetResponse    );
+  rpc DeleteAsset     (MsgDeleteAsset    ) returns (MsgDeleteAssetResponse    );
+  rpc InitiateAuction (MsgInitiateAuction) returns (MsgInitiateAuctionResponse);
+  rpc CancelAuction   (MsgCancelAuction  ) returns (MsgCancelAuctionResponse  );
+  rpc ExecuteAuction  (MsgExecuteAuction ) returns (MsgExecuteAuctionResponse );
+  rpc SendBid         (MsgSendBid        ) returns (MsgSendBidResponse        );
+  rpc UpdateBid       (MsgUpdateBid      ) returns (MsgUpdateBidResponse      );
+  rpc CancelBid       (MsgCancelBid      ) returns (MsgCancelBidResponse      );
+}
+message MsgCreateAsset {
+  string creator     = 1;
+  uint64 tokenId     = 2;
+  string name        = 3;
+  string symbol      = 4;
+  string owner       = 5;
+  string description = 6;
+  string url         = 7;
+  bool   isAuction   = 8;
+}
+
+message MsgCreateAssetResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateAsset {
+  string creator     = 1;
+  uint64 id          = 2;
+  uint64 tokenId     = 3;
+  string name        = 4;
+  string symbol      = 5;
+  string owner       = 6;
+  string description = 7;
+  string url         = 8;
+  bool   isAuction   = 9;
+}
+
+message MsgUpdateAssetResponse {}
+
+message MsgDeleteAsset {
+  string creator = 1;
+  uint64 id      = 2;
+}
+
+message MsgDeleteAssetResponse {}
+
+message MsgInitiateAuction {
+  string                   creator    = 1;
+  uint64                   tokenId    = 2;
+  cosmos.base.v1beta1.Coin startPrice = 3 [(gogoproto.nullable) = false];
+  string                   deadline   = 4;
+}
+
+message MsgInitiateAuctionResponse {}
+
+message MsgCancelAuction {
+  string creator   = 1;
+  uint64 auctionId = 2;
+}
+
+message MsgCancelAuctionResponse {}
+
+message MsgExecuteAuction {
+  string creator   = 1;
+  uint64 auctionId = 2;
+}
+
+message MsgExecuteAuctionResponse {}
+
+message MsgSendBid {
+  string                   creator   = 1;
+  uint64                   auctionId = 2;
+  cosmos.base.v1beta1.Coin price     = 3 [(gogoproto.nullable) = false];
+}
+
+message MsgSendBidResponse {}
+
+message MsgUpdateBid {
+  string                   creator   = 1;
+  uint64                   auctionId = 2;
+  cosmos.base.v1beta1.Coin price     = 3 [(gogoproto.nullable) = false];
+}
+
+message MsgUpdateBidResponse {}
+
+message MsgCancelBid {
+  string creator   = 1;
+  uint64 auctionId = 2;
+}
+
+message MsgCancelBidResponse {}
+

@@ -1,0 +1,19 @@
+syntax = "proto3";
+package auction.auction;
+
+option go_package = "github.com/PavelTabacu/auction/x/auction/types";
+import "gogoproto/gogo.proto"; 
+import "cosmos/base/v1beta1/coin.proto"; 
+
+message Auction {
+  uint64 id = 1;
+  string seller = 2; 
+  uint64 tokenId = 3; 
+  cosmos.base.v1beta1.Coin startPrice = 4 [(gogoproto.nullable) = false]; 
+  cosmos.base.v1beta1.Coin currentPrice = 5 [(gogoproto.nullable) = false]; 
+  string auctionDate = 6; 
+  string deadline = 7; 
+  repeated uint64 bidIds = 8; 
+  bool isCancel = 9; 
+  
+}

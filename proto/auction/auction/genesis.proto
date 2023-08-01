@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package auction.auction;
+
+import "gogoproto/gogo.proto";
+import "auction/auction/params.proto";
+import "auction/auction/asset.proto";
+import "auction/auction/auction.proto";
+import "auction/auction/bid.proto";
+import "auction/auction/users.proto";
+
+option go_package = "github.com/PavelTabacu/auction/x/auction/types";
+
+// GenesisState defines the auction module's genesis state.
+message GenesisState {
+           Params  params       = 1 [(gogoproto.nullable) = false];
+  repeated Asset   assetList    = 2 [(gogoproto.nullable) = false];
+           uint64  assetCount   = 3;
+  repeated Auction auctionList  = 4 [(gogoproto.nullable) = false];
+           uint64  auctionCount = 5;
+  repeated Bid     bidList      = 6 [(gogoproto.nullable) = false];
+           uint64  bidCount     = 7;
+  repeated Users   usersList    = 8 [(gogoproto.nullable) = false];
+}
+

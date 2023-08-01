@@ -1,0 +1,13 @@
+syntax = "proto3";
+package auction.auction;
+
+option go_package = "github.com/PavelTabacu/auction/x/auction/types";
+
+message Users {
+  string index = 1; 
+  repeated uint64 auctionIds = 2; 
+  repeated uint64 tokenIds = 3; 
+  repeated uint64 bidIds = 4; 
+  
+}
+

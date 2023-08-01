@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+package auction.auction;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "auction/auction/params.proto";
+import "auction/auction/asset.proto";
+import "auction/auction/auction.proto";
+import "auction/auction/bid.proto";
+import "auction/auction/users.proto";
+
+option go_package = "github.com/PavelTabacu/auction/x/auction/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/PavelTabacu/auction/auction/params";
+  
+  }
+  
+  // Queries a list of Asset items.
+  rpc Asset    (QueryGetAssetRequest) returns (QueryGetAssetResponse) {
+    option (google.api.http).get = "/PavelTabacu/auction/auction/asset/{id}";
+  
+  }
+  rpc AssetAll (QueryAllAssetRequest) returns (QueryAllAssetResponse) {
+    option (google.api.http).get = "/PavelTabacu/auction/auction/asset";
+  
+  }
+  
+  // Queries a list of Auction items.
+  rpc Auction    (QueryGetAuctionRequest) returns (QueryGetAuctionResponse) {
+    option (google.api.http).get = "/PavelTabacu/auction/auction/auction/{id}";
+  
+  }
+  rpc AuctionAll (QueryAllAuctionRequest) returns (QueryAllAuctionResponse) {
+    option (google.api.http).get = "/PavelTabacu/auction/auction/auction";
+  
+  }
+  
+  // Queries a list of Bid items.
+  rpc Bid    (QueryGetBidRequest) returns (QueryGetBidResponse) {
+    option (google.api.http).get = "/PavelTabacu/auction/auction/bid/{id}";
+  
+  }
+  rpc BidAll (QueryAllBidRequest) returns (QueryAllBidResponse) {
+    option (google.api.http).get = "/PavelTabacu/auction/auction/bid";
+  
+  }
+  
+  // Queries a list of Users items.
+  rpc Users    (QueryGetUsersRequest) returns (QueryGetUsersResponse) {
+    option (google.api.http).get = "/PavelTabacu/auction/auction/users/{index}";
+  
+  }
+  rpc UsersAll (QueryAllUsersRequest) returns (QueryAllUsersResponse) {
+    option (google.api.http).get = "/PavelTabacu/auction/auction/users";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetAssetRequest {
+  uint64 id = 1;
+}
+
+message QueryGetAssetResponse {
+  Asset Asset = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllAssetRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllAssetResponse {
+  repeated Asset                                  Asset      = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetAuctionRequest {
+  uint64 id = 1;
+}
+
+message QueryGetAuctionResponse {
+  Auction Auction = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllAuctionRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllAuctionResponse {
+  repeated Auction                                Auction    = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetBidRequest {
+  uint64 id = 1;
+}
+
+message QueryGetBidResponse {
+  Bid Bid = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllBidRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllBidResponse {
+  repeated Bid                                    Bid        = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetUsersRequest {
+  string index = 1;
+}
+
+message QueryGetUsersResponse {
+  Users users = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllUsersRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllUsersResponse {
+  repeated Users                                  users      = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
