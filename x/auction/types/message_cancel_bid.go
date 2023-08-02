@@ -9,10 +9,10 @@ const TypeMsgCancelBid = "cancel_bid"
 
 var _ sdk.Msg = &MsgCancelBid{}
 
-func NewMsgCancelBid(creator string, auctionId uint64) *MsgCancelBid {
+func NewMsgCancelBid(creator string, bidId uint64) *MsgCancelBid {
 	return &MsgCancelBid{
-		Creator:   creator,
-		AuctionId: auctionId,
+		Creator: creator,
+		BidId:   bidId,
 	}
 }
 
@@ -42,5 +42,9 @@ func (msg *MsgCancelBid) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if msg.BidId < 0 {
+		return sdkerrors.Wrapf(ErrInvalidAuction, "invalid bidId (%s)", err)
+	}
+
 	return nil
 }

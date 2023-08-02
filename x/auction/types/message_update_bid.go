@@ -9,11 +9,11 @@ const TypeMsgUpdateBid = "update_bid"
 
 var _ sdk.Msg = &MsgUpdateBid{}
 
-func NewMsgUpdateBid(creator string, auctionId uint64, price sdk.Coin) *MsgUpdateBid {
+func NewMsgUpdateBid(creator string, bidId uint64, price sdk.Coin) *MsgUpdateBid {
 	return &MsgUpdateBid{
-		Creator:   creator,
-		AuctionId: auctionId,
-		Price:     price,
+		Creator: creator,
+		BidId:   bidId,
+		Price:   price,
 	}
 }
 
@@ -43,5 +43,9 @@ func (msg *MsgUpdateBid) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if msg.BidId < 0 {
+		return sdkerrors.Wrapf(ErrInvalidAuction, "invalid bidId (%s)", err)
+	}
+
 	return nil
 }

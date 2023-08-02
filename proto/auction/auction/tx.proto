@@ -89,7 +89,7 @@ message MsgSendBidResponse {}
 
 message MsgUpdateBid {
   string                   creator   = 1;
-  uint64                   auctionId = 2;
+  uint64                   bidId = 2;
   cosmos.base.v1beta1.Coin price     = 3 [(gogoproto.nullable) = false];
 }
 
@@ -97,7 +97,7 @@ message MsgUpdateBidResponse {}
 
 message MsgCancelBid {
   string creator   = 1;
-  uint64 auctionId = 2;
+  uint64 bidId = 2;
 }
 
 message MsgCancelBidResponse {}
