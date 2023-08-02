@@ -221,7 +221,7 @@ paths:
                       format: uint64
                     seller:
                       type: string
-                    tokenId:
+                    assetId:
                       type: string
                       format: uint64
                     startPrice:
@@ -388,7 +388,7 @@ paths:
                     format: uint64
                   seller:
                     type: string
-                  tokenId:
+                  assetId:
                     type: string
                     format: uint64
                   startPrice:
@@ -47358,7 +47358,7 @@ definitions:
         format: uint64
       seller:
         type: string
-      tokenId:
+      assetId:
         type: string
         format: uint64
       startPrice:
@@ -47513,7 +47513,7 @@ definitions:
               format: uint64
             seller:
               type: string
-            tokenId:
+            assetId:
               type: string
               format: uint64
             startPrice:
@@ -47730,7 +47730,7 @@ definitions:
             format: uint64
           seller:
             type: string
-          tokenId:
+          assetId:
             type: string
             format: uint64
           startPrice:

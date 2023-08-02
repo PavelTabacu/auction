@@ -58,7 +58,7 @@ message MsgDeleteAssetResponse {}
 
 message MsgInitiateAuction {
   string                   creator    = 1;
-  uint64                   tokenId    = 2;
+  uint64                   assetId    = 2;
   cosmos.base.v1beta1.Coin startPrice = 3 [(gogoproto.nullable) = false];
   string                   deadline   = 4;
 }

@@ -9,10 +9,10 @@ const TypeMsgInitiateAuction = "initiate_auction"
 
 var _ sdk.Msg = &MsgInitiateAuction{}
 
-func NewMsgInitiateAuction(creator string, tokenId uint64, startPrice sdk.Coin, deadline string) *MsgInitiateAuction {
+func NewMsgInitiateAuction(creator string, assetId uint64, startPrice sdk.Coin, deadline string) *MsgInitiateAuction {
 	return &MsgInitiateAuction{
 		Creator:    creator,
-		TokenId:    tokenId,
+		AssetId:    assetId,
 		StartPrice: startPrice,
 		Deadline:   deadline,
 	}
@@ -44,6 +44,15 @@ func (msg *MsgInitiateAuction) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if msg.AssetId < 0 {
+		return sdkerrors.Wrapf(ErrInvalidAsset, "invalid assetId (%s)", err)
+	}
+	if !msg.StartPrice.IsValid() && msg.StartPrice.IsNegative() {
+		return sdkerrors.Wrapf(ErrInvalidPrice, "invalid StartPrice (%s)", err)
+	}
+	// if msg.Deadline < 0 {
+	// 	return sdkerrors.Wrapf(ErrInvalidOperation, "invalid Deadline (%s)", err)
+	// }
 
 	return nil
 }
