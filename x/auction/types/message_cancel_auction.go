@@ -42,5 +42,9 @@ func (msg *MsgCancelAuction) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if msg.AuctionId < 0 {
+		return sdkerrors.Wrapf(ErrInvalidAuction, "invalid auctionId (%s)", err)
+	}
+
 	return nil
 }
