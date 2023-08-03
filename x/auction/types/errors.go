@@ -15,4 +15,5 @@ var (
 	ErrInvalidPrice     = sdkerrors.Register(ModuleName, 1104, "Invalid Price")
 	ErrInvalidAuction   = sdkerrors.Register(ModuleName, 1105, "Invalid Auction")
 	ErrInvalidOperation = sdkerrors.Register(ModuleName, 1106, "Invalid operation")
+	ErrInvalidDeadline  = sdkerrors.Register(ModuleName, 1107, "Invalid deadline")
 )

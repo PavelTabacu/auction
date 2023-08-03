@@ -50,9 +50,6 @@ func (msg *MsgInitiateAuction) ValidateBasic() error {
 	if !msg.StartPrice.IsValid() && msg.StartPrice.IsNegative() {
 		return sdkerrors.Wrapf(ErrInvalidPrice, "invalid StartPrice (%s)", err)
 	}
-	// if msg.Deadline < 0 {
-	// 	return sdkerrors.Wrapf(ErrInvalidOperation, "invalid Deadline (%s)", err)
-	// }
 
 	return nil
 }

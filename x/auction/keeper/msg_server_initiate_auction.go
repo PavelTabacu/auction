@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"time"
 
 	"github.com/PavelTabacu/auction/x/auction/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -23,6 +24,10 @@ func (k msgServer) InitiateAuction(goCtx context.Context, msg *types.MsgInitiate
 	}
 	if token.Creator != msg.Creator {
 		return nil, sdkerrors.Wrapf(types.ErrInvalidUser, "Not the owner of the token, token owner:%s", token.Creator)
+	}
+	deadline, _ := time.Parse(types.DeadlineLayout, msg.Deadline)
+	if deadline.Before(ctx.BlockTime()) {
+		return nil, sdkerrors.Wrapf(types.ErrInvalidOperation, "invalid Deadline %s", token.Creator)
 	}
 
 	auction := types.Auction{
