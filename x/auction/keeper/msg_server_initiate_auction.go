@@ -16,7 +16,6 @@ func (k msgServer) InitiateAuction(goCtx context.Context, msg *types.MsgInitiate
 	_ = ctx
 	token, found := k.Keeper.GetAsset(ctx, msg.AssetId)
 	if !found {
-		// panic("The token not found!")
 		return nil, sdkerrors.Wrapf(types.ErrNotFound, "The token not found!")
 	}
 	if token.IsAuction == true {

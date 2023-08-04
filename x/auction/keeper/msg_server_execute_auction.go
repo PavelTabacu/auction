@@ -20,6 +20,7 @@ func (k msgServer) ExecuteAuction(goCtx context.Context, msg *types.MsgExecuteAu
 	if auction.Seller != msg.Creator {
 		return nil, sdkerrors.Wrapf(types.ErrInvalidUser, "Must be the poster of the auction, auction poster:%s", auction.Seller)
 	}
+
 	err := k.Keeper.ExecuteAuction(ctx, auction)
 	if err != nil {
 		return nil, err

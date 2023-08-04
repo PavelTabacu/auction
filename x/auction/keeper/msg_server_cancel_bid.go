@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"time"
 
 	"github.com/PavelTabacu/auction/x/auction/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -13,14 +14,26 @@ func (k msgServer) CancelBid(goCtx context.Context, msg *types.MsgCancelBid) (*t
 
 	// TODO: Handling the message
 	_ = ctx
-	bid, found := k.Keeper.GetBid(ctx, msg.BidId)
+	auction, found := k.Keeper.GetAuction(ctx, msg.AuctionId)
 	if !found {
 		return nil, sdkerrors.Wrapf(types.ErrNotFound, "Auction not found!")
 	}
-	if bid.Buyer == msg.Creator {
-		bid.IsCancel = true
-		k.Keeper.SetBid(ctx, bid)
-		return &types.MsgCancelBidResponse{}, nil
+	if auction.IsCancel {
+		return nil, sdkerrors.Wrapf(types.ErrInvalidOperation, "The auction is already canceld")
+	}
+	deadline, _ := time.Parse(types.DeadlineLayout, auction.Deadline)
+	if deadline.Before(ctx.BlockTime()) {
+		return nil, sdkerrors.Wrapf(types.ErrInvalidOperation, "The auction is already done")
+	}
+
+	for i := len(auction.BidIds) - 1; i >= 0; i-- {
+		bid, _ := k.Keeper.GetBid(ctx, auction.BidIds[i])
+		if bid.Buyer == msg.Creator {
+			bid.IsCancel = true
+			k.Keeper.SetBid(ctx, bid)
+
+			break
+		}
 	}
 
 	return &types.MsgCancelBidResponse{}, nil

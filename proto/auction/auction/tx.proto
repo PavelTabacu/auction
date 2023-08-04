@@ -19,6 +19,7 @@ service Msg {
   rpc SendBid         (MsgSendBid        ) returns (MsgSendBidResponse        );
   rpc UpdateBid       (MsgUpdateBid      ) returns (MsgUpdateBidResponse      );
   rpc CancelBid       (MsgCancelBid      ) returns (MsgCancelBidResponse      );
+  rpc UpdateAuction   (MsgUpdateAuction  ) returns (MsgUpdateAuctionResponse  );
 }
 message MsgCreateAsset {
   string creator     = 1;
@@ -89,7 +90,7 @@ message MsgSendBidResponse {}
 
 message MsgUpdateBid {
   string                   creator   = 1;
-  uint64                   bidId = 2;
+  uint64                   auctionId = 2;
   cosmos.base.v1beta1.Coin price     = 3 [(gogoproto.nullable) = false];
 }
 
@@ -97,8 +98,17 @@ message MsgUpdateBidResponse {}
 
 message MsgCancelBid {
   string creator   = 1;
-  uint64 bidId = 2;
+  uint64 auctionId = 2;
 }
 
 message MsgCancelBidResponse {}
+
+message MsgUpdateAuction {
+  string                   creator    = 1;
+  uint64                   auctionId  = 2;
+  cosmos.base.v1beta1.Coin startPrice = 3 [(gogoproto.nullable) = false];
+  string                   deadline   = 4;
+}
+
+message MsgUpdateAuctionResponse {}
 

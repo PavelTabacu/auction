@@ -59,6 +59,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCancelBid int = 100
 
+	opWeightMsgUpdateAuction = "op_weight_msg_update_auction"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateAuction int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -197,6 +201,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		auctionsimulation.SimulateMsgCancelBid(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
+	var weightMsgUpdateAuction int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateAuction, &weightMsgUpdateAuction, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateAuction = defaultWeightMsgUpdateAuction
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateAuction,
+		auctionsimulation.SimulateMsgUpdateAuction(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -274,6 +289,14 @@ func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.Wei
 			defaultWeightMsgCancelBid,
 			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
 				auctionsimulation.SimulateMsgCancelBid(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgUpdateAuction,
+			defaultWeightMsgUpdateAuction,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				auctionsimulation.SimulateMsgUpdateAuction(am.accountKeeper, am.bankKeeper, am.keeper)
 				return nil
 			},
 		),

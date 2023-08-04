@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"time"
 
 	"github.com/PavelTabacu/auction/x/auction/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -17,11 +18,13 @@ func (k msgServer) SendBid(goCtx context.Context, msg *types.MsgSendBid) (*types
 	if !found {
 		return nil, sdkerrors.Wrapf(types.ErrNotFound, "Auction not found!")
 	}
-	// if uint64(ctx.BlockHeight()) > auction.PostDate+auction.Duration {
-	// 	return nil, sdkerrors.Wrapf(types.ErrInvalidOperation, "Auction is already ended!")
-	// } else if auction.IsCancel == true {
-	// 	return nil, sdkerrors.Wrapf(types.ErrInvalidOperation, "Auction is already cancelled!")
-	// }
+	deadline, _ := time.Parse(types.DeadlineLayout, auction.Deadline)
+	if deadline.Before(ctx.BlockTime()) {
+		return nil, sdkerrors.Wrapf(types.ErrInvalidOperation, "invalid deadline")
+	}
+	if auction.IsCancel {
+		return nil, sdkerrors.Wrapf(types.ErrInvalidOperation, "The auction is alreay canceled")
+	}
 	if auction.CurrentPrice.IsGTE(msg.Price) {
 		return nil, sdkerrors.Wrapf(types.ErrInvalidPrice, "Lower than or equal to current price. Current Price: %d", auction.CurrentPrice)
 	}
@@ -29,9 +32,9 @@ func (k msgServer) SendBid(goCtx context.Context, msg *types.MsgSendBid) (*types
 		return nil, sdkerrors.Wrapf(types.ErrInvalidOperation, "Sellers cannot bid to their own auctions.")
 	}
 	buyer, _ := sdk.AccAddressFromBech32(msg.Creator)
-	addAmount := sdk.NewInt(1000)
+	addAmount := sdk.NewInt(100)
 	requiredPrice := auction.CurrentPrice.AddAmount(addAmount)
-	if k.bankKeeper.GetBalance(ctx, buyer, "stake").IsLT(requiredPrice) {
+	if k.bankKeeper.GetBalance(ctx, buyer, "token").IsLT(requiredPrice) {
 		return nil, sdkerrors.Wrapf(types.ErrInvalidPrice, "Balance lower than required price %v", requiredPrice)
 	}
 

@@ -27,6 +27,12 @@ func (k msgServer) CreateAsset(goCtx context.Context, msg *types.MsgCreateAsset)
 		ctx,
 		asset,
 	)
+	user, found := k.Keeper.GetUsers(ctx, msg.Creator)
+	if !found {
+		user.Index = msg.Creator
+	}
+	user.AssetIds = append(user.AssetIds, id)
+	k.Keeper.SetUsers(ctx, user)
 
 	return &types.MsgCreateAssetResponse{
 		Id: id,
@@ -65,20 +71,20 @@ func (k msgServer) UpdateAsset(goCtx context.Context, msg *types.MsgUpdateAsset)
 }
 
 func (k msgServer) DeleteAsset(goCtx context.Context, msg *types.MsgDeleteAsset) (*types.MsgDeleteAssetResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
+	// ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Checks that the element exists
-	val, found := k.GetAsset(ctx, msg.Id)
-	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.Id))
-	}
+	// // Checks that the element exists
+	// val, found := k.GetAsset(ctx, msg.Id)
+	// if !found {
+	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.Id))
+	// }
 
-	// Checks if the msg creator is the same as the current owner
-	if msg.Creator != val.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
-	}
+	// // Checks if the msg creator is the same as the current owner
+	// if msg.Creator != val.Creator {
+	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
+	// }
 
-	k.RemoveAsset(ctx, msg.Id)
+	// k.RemoveAsset(ctx, msg.Id)
 
 	return &types.MsgDeleteAssetResponse{}, nil
 }

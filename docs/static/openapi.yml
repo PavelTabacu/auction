@@ -723,7 +723,7 @@ paths:
                       items:
                         type: string
                         format: uint64
-                    tokenIds:
+                    assetIds:
                       type: array
                       items:
                         type: string
@@ -858,7 +858,7 @@ paths:
                     items:
                       type: string
                       format: uint64
-                  tokenIds:
+                  assetIds:
                     type: array
                     items:
                       type: string
@@ -47441,6 +47441,8 @@ definitions:
     type: object
   auction.auction.MsgUpdateAssetResponse:
     type: object
+  auction.auction.MsgUpdateAuctionResponse:
+    type: object
   auction.auction.MsgUpdateBidResponse:
     type: object
   auction.auction.Params:
@@ -47657,7 +47659,7 @@ definitions:
               items:
                 type: string
                 format: uint64
-            tokenIds:
+            assetIds:
               type: array
               items:
                 type: string
@@ -47818,7 +47820,7 @@ definitions:
             items:
               type: string
               format: uint64
-          tokenIds:
+          assetIds:
             type: array
             items:
               type: string
@@ -47845,7 +47847,7 @@ definitions:
         items:
           type: string
           format: uint64
-      tokenIds:
+      assetIds:
         type: array
         items:
           type: string

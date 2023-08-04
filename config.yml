@@ -8,14 +8,44 @@ accounts:
   coins:
   - 10000token
   - 100000000stake
-client:
-  openapi:
-    path: docs/static/openapi.yml
+- name: seller1
+  coins:
+  - 1000token
+  - 100000000stake
+- name: seller2
+  coins:
+  - 2000token
+  - 200000000stake
+- name: buyer1
+  coins:
+  - 30000token
+  - 300000000stake
+- name: buyer2
+  coins:
+  - 40000token
+  - 400000000stake
+- name: account1
+  coins: 
+  - 10000token
+  - 100000000stake
+  mnemonic: trade supply wonder sting ripple swarm abstract decrease poet wisdom crucial cable
+- name: account2
+  coins:
+  - 20000token
+  - 200000000stake
+  mnemonic: certain ladder pudding catalog orphan anxiety illegal domain spin large token clock
 faucet:
   name: bob
   coins:
   - 5token
   - 100000stake
+client:
+  typescript:
+    path: ts-client
+  hooks:
+    path: react/src/hooks
+  openapi:
+    path: docs/static/openapi.yml
 validators:
 - name: alice
   bonded: 100000000stake

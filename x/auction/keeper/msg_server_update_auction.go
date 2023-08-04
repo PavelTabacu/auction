@@ -2,13 +2,14 @@ package keeper
 
 import (
 	"context"
+	"time"
 
 	"github.com/PavelTabacu/auction/x/auction/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k msgServer) CancelAuction(goCtx context.Context, msg *types.MsgCancelAuction) (*types.MsgCancelAuctionResponse, error) {
+func (k msgServer) UpdateAuction(goCtx context.Context, msg *types.MsgUpdateAuction) (*types.MsgUpdateAuctionResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Handling the message
@@ -20,15 +21,15 @@ func (k msgServer) CancelAuction(goCtx context.Context, msg *types.MsgCancelAuct
 	if auction.Seller != msg.Creator {
 		return nil, sdkerrors.Wrapf(types.ErrInvalidUser, "Must be the Seller of the auction, auction Seller:%s", auction.Seller)
 	}
-	if auction.IsCancel == true {
-		return nil, sdkerrors.Wrapf(types.ErrInvalidOperation, "Auction is already cancelled!")
+	deadline, _ := time.Parse(types.DeadlineLayout, msg.Deadline)
+	if deadline.Before(ctx.BlockTime()) {
+		return nil, sdkerrors.Wrapf(types.ErrInvalidOperation, "invalid Deadline")
 	}
-	auction.IsCancel = true
+
+	auction.IsCancel = false
+	auction.CurrentPrice = msg.StartPrice
+	auction.Deadline = msg.Deadline
 	k.Keeper.SetAuction(ctx, auction)
 
-	asset, _ := k.Keeper.GetAsset(ctx, auction.AssetId)
-	asset.IsAuction = false
-	k.Keeper.SetAsset(ctx, asset)
-
-	return &types.MsgCancelAuctionResponse{}, nil
+	return &types.MsgUpdateAuctionResponse{}, nil
 }
